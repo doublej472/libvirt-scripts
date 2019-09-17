@@ -1,4 +1,8 @@
 #!/bin/sh
+# Creates a virtual machine from a base image, using CoW
+# DO NOT DELETE YOUR BASE IMAGE AFTER YOU CREATE A VM, YOU WILL LOSE DATA
+# If you don't want CoW copies of your base image, replace the `qemu-img` commands below with:
+# cp -v $6 $VMDIR/$1.qcow2
 . ./config.sh
 
 usage() {
@@ -27,7 +31,6 @@ if [ -f $VMDIR/$1 ]; then
 fi
 
 qemu-img create -f qcow2 -F qcow2 -b $6 $VMDIR/$1.qcow2 $5
-qemu-img resize $VMDIR/$1.qcow2 $5
 
 ./create-local-config.sh $1 $2 $7
 
@@ -40,7 +43,7 @@ virt-install \
 	--vcpus $3 \
 	--os-variant debian9 \
 	--controller scsi,model=virtio-scsi \
-	-w bridge=br0,model=virtio,mac=$8 \
-	--disk vol=vms/$1.qcow2,bus=scsi,cache=directsync --import \
-	--disk vol=vms/$1-cidata.iso,device=cdrom,bus=scsi,cache=directsync \
+	-w bridge=$VMBRIDGE,model=virtio,mac=$8 \
+	--disk vol=$VMPOOL/$1.qcow2,bus=scsi,cache=directsync --import \
+	--disk vol=$VMPOOL/$1-cidata.iso,device=cdrom,bus=scsi,cache=directsync \
 	--autostart --noautoconsole

@@ -30,9 +30,9 @@ if [ -f $VMDIR/$1 ]; then
 	return
 fi
 
-qemu-img create -f qcow2 -F qcow2 -b $6 $VMDIR/$1.qcow2 $5
+sudo -u libvirt-qemu qemu-img create -f qcow2 -F qcow2 -b $6 $VMDIR/$1.qcow2 $5
 
-./create-local-config.sh $1 $2 $7
+sudo -u libvirt-qemu ./create-local-config.sh $1 $2 $7
 
 chown -v libvirt-qemu:libvirt-qemu $VMDIR/$1.qcow2 $VMDIR/$1-cidata.iso
 

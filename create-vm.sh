@@ -1,7 +1,7 @@
 #!/bin/sh
 # Creates a virtual machine from a base image, using CoW
 # DO NOT DELETE YOUR BASE IMAGE AFTER YOU CREATE A VM, YOU WILL LOSE DATA
-# If you don't want CoW copies of your base image, replace the `qemu-img` commands below with:
+# If you don't want CoW copies of your base image, replace the `qemu-img` command below with:
 # cp -v $6 $VMDIR/$1.qcow2
 . ./config.sh
 
@@ -33,6 +33,8 @@ fi
 qemu-img create -f qcow2 -F qcow2 -b $6 $VMDIR/$1.qcow2 $5
 
 ./create-local-config.sh $1 $2 $7
+
+chown -v libvirt-qemu:libvirt-qemu $VMDIR/$1.qcow2 $VMDIR/$1-cidata.iso
 
 # Manually copying images requies a pool refresh
 virsh pool-refresh $VMPOOL

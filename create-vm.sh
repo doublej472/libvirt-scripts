@@ -30,11 +30,10 @@ if [ -f $VMDIR/$1 ]; then
 	return
 fi
 
-sudo -u libvirt-qemu qemu-img create -f qcow2 -F qcow2 -b $6 $VMDIR/$1.qcow2 $5
+qemu-img create -f qcow2 -F qcow2 -b $6 $VMDIR/$1.qcow2 $5
+./create-local-config.sh $1 $2 $7
 
-sudo -u libvirt-qemu ./create-local-config.sh $1 $2 $7
-
-chown -v libvirt-qemu:libvirt-qemu $VMDIR/$1.qcow2 $VMDIR/$1-cidata.iso
+chown -v $VMUSER:$VMGROUP $VMDIR/$1.qcow2 $VMDIR/$1-cidata.iso
 
 # Manually copying images requies a pool refresh
 virsh pool-refresh $VMPOOL
@@ -43,7 +42,7 @@ virt-install \
 	-n $1 \
 	--memory $4 \
 	--vcpus $3 \
-	--os-variant debian9 \
+	--os-variant $OSVARIANT \
 	--controller scsi,model=virtio-scsi \
 	-w bridge=$VMBRIDGE,model=virtio,mac=$8 \
 	--disk vol=$VMPOOL/$1.qcow2,bus=scsi,cache=directsync --import \

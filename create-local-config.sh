@@ -1,28 +1,37 @@
 #!/bin/sh
+# Creates a configuration iso file for clount-init NoCloud
 . ./config.sh
 
+# Temporary location to store files
 TMPDIR=/tmp/create-local-config-$$
+SSHDIR=$PWD/ssh-keys
 
 usage() {
-	echo "$0 <name> <domain> <user>"
+	echo "$0 <VM name> <network domain> <user>"
 }
 
 if [ $# -ne 3 ]; then
 	usage
-	return 1
+	exit 1
+fi
+
+if [ -z "$(ls -A $SSHDIR)" ]; then
+	echo "Put some public SSH keys in $SSHDIR!"
+	exit 1
 fi
 
 rm -rf $TMPDIR
 mkdir -p $TMPDIR
 cd $TMPDIR
 
+for i in $SSHDIR/*; do echo "    - $(cat $i)"; done > ssh-file
+
 cat > user-data <<EOF
 #cloud-config
 users:
   - name: $3
     ssh_authorized_keys:
-    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIErW38CaIelX4UxWViJviTUBl13JUyX3vWXj8jM0+Gpv root@jump.doublej472.bak
-    - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKSPehBOR9d26+KPNGUYl5SReamcPuGZrNM7BQcpHOqm ansible@ansible-control
+$(cat ssh-file)
     sudo: ALL=(ALL) NOPASSWD:ALL
     shell: /bin/bash
 EOF

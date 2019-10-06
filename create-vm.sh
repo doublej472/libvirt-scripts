@@ -3,6 +3,7 @@
 # DO NOT DELETE YOUR BASE IMAGE AFTER YOU CREATE A VM, YOU WILL LOSE DATA
 # If you don't want CoW copies of your base image, replace the `qemu-img` command below with:
 # cp -v $6 $VMDIR/$1.qcow2
+set -e
 . ./config.sh
 
 usage() {

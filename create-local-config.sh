@@ -1,5 +1,6 @@
 #!/bin/sh
 # Creates a configuration iso file for clount-init NoCloud
+set -e
 . ./config.sh
 
 # Temporary location to store files

@@ -12,23 +12,23 @@ usage() {
 
 if [ $# -ne 8 ]; then
 	usage
-	return
+	exit 1
 fi
 
 if [ ! -f ./create-local-config.sh ]; then
 	echo "This script needs ./create-local-config.sh to run!"
-	return
+	exit 1
 fi
 
 if [ ! -f $6 ]; then
 	echo "Can't find base image at $6!"
 	usage
-	return
+	exit 1
 fi
 
 if [ -f $VMDIR/$1 ]; then
 	echo "Refusing to overwrite image at $VMDIR/$1!"
-	return
+	exit 1
 fi
 
 qemu-img create -f qcow2 -F qcow2 -b $6 $VMDIR/$1.qcow2 $5

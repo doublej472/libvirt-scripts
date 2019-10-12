@@ -8,6 +8,9 @@ in the ``config.sh`` file.
 Your public SSH keys should be added to the ``ssh-keys`` directory, otherwise
 you won't be able to login to your VMs
 
+[Also, I made a post about this on my
+blog!](https://blog.doublej472.com/post/libvirt-cluster/)
+
 ``create-vm.sh``
 ----------------
 

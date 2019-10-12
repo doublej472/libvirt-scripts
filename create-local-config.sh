@@ -4,7 +4,7 @@ set -e
 . ./config.sh
 
 # Temporary location to store files
-TMPDIR=/tmp/create-local-config-$$
+TMPDIR=$(mktemp)
 SSHDIR=$PWD/ssh-keys
 
 usage() {
@@ -16,13 +16,11 @@ if [ $# -ne 3 ]; then
 	exit 1
 fi
 
-if [ -z "$(ls -A $SSHDIR)" ]; then
+if [ -z "$(ls -1 $SSHDIR)" ]; then
 	echo "Put some public SSH keys in $SSHDIR!"
 	exit 1
 fi
 
-rm -rf $TMPDIR
-mkdir -p $TMPDIR
 cd $TMPDIR
 
 for i in $SSHDIR/*; do echo "    - $(cat $i)"; done > ssh-file

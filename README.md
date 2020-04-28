@@ -30,6 +30,13 @@ This script will call ``create-local-config.sh`` to create an ISO file that will
 be used by [cloud-init](https://cloud-init.io/) on the VM base image for
 provisioning.
 
+``delete-vm.sh``
+----------------
+
+Deletes and undefines a VM.
+
+THIS WILL REMOVE ALL DATA ASSOCIATED WITH THE VM, INCLUDING METADATA AND STORAGE!
+
 ``create-local-config.sh``
 --------------------------
 

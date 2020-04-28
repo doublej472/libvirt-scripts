@@ -4,7 +4,7 @@ set -e
 . ./config.sh
 
 # Temporary location to store files
-TMPDIR=$(mktemp)
+TMPDIR=$(mktemp -d)
 SSHDIR=$PWD/ssh-keys
 
 usage() {

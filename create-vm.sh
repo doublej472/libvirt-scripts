@@ -35,6 +35,7 @@ qemu-img create -f qcow2 -F qcow2 -b $6 $VMDIR/$1.qcow2 $5
 ./create-local-config.sh $1 $2 $7
 
 chown -v $VMUSER:$VMGROUP $VMDIR/$1.qcow2 $VMDIR/$1-cidata.iso
+chmod -v 0600 $VMDIR/$1.qcow2 $VMDIR/$1-cidata.iso
 
 # Manually copying images requies a pool refresh
 virsh pool-refresh $VMPOOL
